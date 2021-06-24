@@ -86,16 +86,20 @@
 
   scene.traverse(function (obj) {
     if (obj.type === 'Group') {
-      console.log(obj.name)
+      console.log(obj.name + ' ' + obj.id)
     }
     if (obj.type === 'Mesh') {
-      console.log('  ' + obj.name)
+      console.log('  ' + obj.name + ' ' + obj.id)
       obj.material.color.set(0xffff00)
     }
     if (obj.name === '左眼' | obj.name === '右眼') {
       obj.material.color.set(0x000000)
     }
   })
+
+  // 遍历查找对象的子对象，返回name对应的对象（name是可以重名的，返回第一个）
+  let nameNode = scene.getObjectByName('左腿')
+  nameNode.material.color.set(0xff0000)
   // endregion
 
   // region 光源设置，添加到场景

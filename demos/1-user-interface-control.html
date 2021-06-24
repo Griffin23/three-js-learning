@@ -12,7 +12,8 @@
     }
   </style>
   <!--引入three.js三维引擎-->
-  <script src="./sdk/three-r129.js"></script>
+  <script src="../sdk/three-r129.js"></script>
+  <script src="../sdk/OrbitControls.js"></script>
 </head>
 
 <body>
@@ -62,15 +63,14 @@
   renderer.setClearColor(0xb9d3ff, 1) //设置背景颜色
   document.body.appendChild(renderer.domElement) //body元素中插入canvas对象
   //执行渲染操作   指定场景、相机作为参数
-  // renderer.render(scene, camera)
-
-  // 渲染 + 旋转，结合interval，完成旋转动画
   function render() {
     renderer.render(scene, camera)
-    mesh.rotateY(0.01)
   }
-  // 每秒渲染50次，也就是50FPS
-  setInterval(render, 20)
+  render()
+
+  // 监听鼠标和键盘
+  let controls = new THREE.OrbitControls(camera, renderer.domElement)//创建控件对象
+  controls.addEventListener('change', render)//监听鼠标、键盘事件
 </script>
 </body>
 </html>

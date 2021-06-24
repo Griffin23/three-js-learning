@@ -24,8 +24,8 @@
   /**
    * 创建网格模型
    */
-  let geometry = new THREE.SphereGeometry(60, 40, 40); //创建一个球体几何对象
-  // let geometry = new THREE.BoxGeometry(100, 100, 100) //创建一个立方体几何对象Geometry
+  // let geometry = new THREE.SphereGeometry(60, 40, 40); //创建一个球体几何对象
+  let geometry = new THREE.BoxGeometry(100, 100, 100) //创建一个立方体几何对象Geometry
   let material = new THREE.MeshLambertMaterial({
     color: 0x0000ff
   }) //材质对象Material
@@ -62,7 +62,14 @@
   renderer.setClearColor(0xb9d3ff, 1) //设置背景颜色
   document.body.appendChild(renderer.domElement) //body元素中插入canvas对象
   //执行渲染操作   指定场景、相机作为参数
-  renderer.render(scene, camera)
+  // renderer.render(scene, camera)
+
+  // 渲染 + 旋转，结合interval，完成旋转动画
+  function render() {
+    renderer.render(scene, camera)
+    mesh.rotateY(0.01)
+  }
+  setInterval(render, 20)
 </script>
 </body>
 </html>

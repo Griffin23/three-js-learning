@@ -17,10 +17,14 @@
 
 <body>
 <script>
+  // region 创建场景对象Scene
   /**
    * 创建场景对象Scene
    */
   let scene = new THREE.Scene()
+  // endregion
+
+  // region 创建网格模型（from 集合体 + 材质 等），添加到场景
   /**
    * 创建网格模型
    */
@@ -31,6 +35,9 @@
   }) //材质对象Material
   let mesh = new THREE.Mesh(geometry, material) //网格模型对象Mesh
   scene.add(mesh) //网格模型添加到场景中
+  // endregion
+
+  // region 光源设置，添加到场景
   /**
    * 光源设置
    */
@@ -43,6 +50,9 @@
   scene.add(ambient)
   // console.log(scene)
   // console.log(scene.children)
+  // endregion
+
+  // region 相机设置
   /**
    * 相机设置
    */
@@ -54,6 +64,9 @@
   let camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000)
   camera.position.set(200, 300, 200) //设置相机位置
   camera.lookAt(scene.position) //设置相机方向(指向的场景对象)
+  // endregion
+
+  // region 创建渲染器对象，并渲染（渲染 scene + camera）
   /**
    * 创建渲染器对象
    */
@@ -71,6 +84,7 @@
   }
   // 每秒渲染50次，也就是50FPS
   setInterval(render, 20)
+  // endregion
 </script>
 </body>
 </html>

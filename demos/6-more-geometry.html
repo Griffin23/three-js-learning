@@ -41,7 +41,9 @@
   // 立方体网格模型
   let geometry1 = new THREE.BoxGeometry(100, 100, 100)
   let material1 = new THREE.MeshLambertMaterial({
-    color: 0x0000ff
+    color: 0x0000ff,
+    opacity: 0.5,
+    transparent: true
   }) //材质对象Material
   let mesh1 = new THREE.Mesh(geometry1, material1) //网格模型对象Mesh
   scene.add(mesh1) //网格模型添加到场景中

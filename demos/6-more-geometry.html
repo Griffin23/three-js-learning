@@ -64,6 +64,10 @@
   // mesh3.translateX(120); //球体网格模型沿Y轴正方向平移120
   mesh3.position.set(120, 0, 0)//设置mesh3模型对象的xyz坐标为120,0,0
   scene.add(mesh3)
+
+  // 辅助坐标系  参数250表示坐标系大小，可以根据场景大小去设置
+  let axisHelper = new THREE.AxisHelper(250);
+  scene.add(axisHelper);
   // endregion
 
   // region 光源设置，添加到场景

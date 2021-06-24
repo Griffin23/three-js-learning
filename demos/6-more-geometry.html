@@ -50,9 +50,11 @@
 
   // 球体网格模型
   let geometry2 = new THREE.SphereGeometry(60, 40, 40)
-  let material2 = new THREE.MeshLambertMaterial({
-    color: 0xff00ff
-  })
+  let material2 = new THREE.MeshPhongMaterial({ // 高光效果
+    color: 0xff00ff,
+    specular: 0x4488ee,
+    shininess: 12
+  })//材质对象
   let mesh2 = new THREE.Mesh(geometry2, material2) //网格模型对象Mesh
   mesh2.translateY(120) //球体网格模型沿Y轴正方向平移120
   scene.add(mesh2)

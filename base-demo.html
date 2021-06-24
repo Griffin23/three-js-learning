@@ -24,8 +24,8 @@
   /**
    * 创建网格模型
    */
-    // let geometry = new THREE.SphereGeometry(60, 40, 40); //创建一个球体几何对象
-  let geometry = new THREE.BoxGeometry(100, 100, 100) //创建一个立方体几何对象Geometry
+  let geometry = new THREE.SphereGeometry(60, 40, 40); //创建一个球体几何对象
+  // let geometry = new THREE.BoxGeometry(100, 100, 100) //创建一个立方体几何对象Geometry
   let material = new THREE.MeshLambertMaterial({
     color: 0x0000ff
   }) //材质对象Material
@@ -34,7 +34,7 @@
   /**
    * 光源设置
    */
-    //点光源
+  //点光源
   let point = new THREE.PointLight(0xffffff)
   point.position.set(400, 200, 300) //点光源位置
   scene.add(point) //点光源添加到场景中

@@ -12,8 +12,8 @@
     }
   </style>
   <!--引入three.js三维引擎-->
-  <script src="../sdk/three-r129.js"></script>
-  <script src="../sdk/OrbitControls.js"></script>
+  <script src="../../sdk/three-r129.js"></script>
+  <script src="../../sdk/OrbitControls.js"></script>
 </head>
 
 <body>
@@ -26,17 +26,33 @@
   // endregion
 
   // region 创建模型（from 几合体 + 材质 等），添加到场景
-  /**
-   * 创建网格模型
-   */
-    // let geometry = new THREE.SphereGeometry(60, 40, 40); //创建一个球体几何对象
-  let geometry = new THREE.BoxGeometry(100, 100, 100) //创建一个立方体几何对象Geometry
-  let material = new THREE.MeshLambertMaterial({
-    color: 0x0000ff
-  }) //材质对象Material
+  let geometry = new THREE.BufferGeometry() //创建一个Buffer类型几何体对象
+  //类型数组创建顶点数据
+  let vertices = new Float32Array([
+    0, 0, 0, //顶点1坐标
+    50, 0, 0, //顶点2坐标
+    0, 100, 0, //顶点3坐标
+    0, 0, 10, //顶点4坐标
+    0, 0, 100, //顶点5坐标
+    50, 0, 10 //顶点6坐标
+  ])
+  // 创建属性缓冲区对象
+  let attribue = new THREE.BufferAttribute(vertices, 3) //3个为一组，表示一个顶点的xyz坐标
+  // 设置几何体attributes属性的位置属性
+  geometry.attributes.position = attribue
+  // 三角面(网格)渲染模式
+  let material = new THREE.MeshBasicMaterial({
+    color: 0x0000ff, //三角面颜色
+    side: THREE.DoubleSide //两面可见
+  }) //材质对象
   let mesh = new THREE.Mesh(geometry, material) //网格模型对象Mesh
   scene.add(mesh) //网格模型添加到场景中
+
   // endregion
+
+  // 辅助坐标系
+  let axisHelper = new THREE.AxisHelper(250)
+  scene.add(axisHelper)
 
   // region 光源设置，添加到场景
   /**
@@ -76,9 +92,10 @@
   renderer.setClearColor(0xb9d3ff, 1) //设置背景颜色
   document.body.appendChild(renderer.domElement) //body元素中插入canvas对象
   //执行渲染操作   指定场景、相机作为参数
-  function render() {
+  function render () {
     renderer.render(scene, camera)
   }
+
   render()
 
   // 监听鼠标和键盘

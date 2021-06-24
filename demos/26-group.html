@@ -26,19 +26,91 @@
   // endregion
 
   // region 创建模型（from 几合体 + 材质 等），添加到场景
-  //创建两个网格模型mesh1、mesh2
-  let geometry = new THREE.BoxGeometry(20, 20, 20)
-  let material = new THREE.MeshLambertMaterial({ color: 0x0000ff })
-  let group = new THREE.Group()
-  let mesh1 = new THREE.Mesh(geometry, material)
-  let mesh2 = new THREE.Mesh(geometry, material)
-  mesh2.translateX(25)
-  //把mesh1型插入到组group中，mesh1作为group的子对象
-  group.add(mesh1)
-  //把mesh2型插入到组group中，mesh2作为group的子对象
-  group.add(mesh2)
-  //把group插入到场景中作为场景子对象
-  scene.add(group)
+  // 头部网格模型和组
+  let headMesh = sphereMesh(10, 0, 0, 0)
+  headMesh.name = '脑壳'
+  let leftEyeMesh = sphereMesh(1, 8, 5, 4)
+  leftEyeMesh.name = '左眼'
+  let rightEyeMesh = sphereMesh(1, 8, 5, -4)
+  rightEyeMesh.name = '右眼'
+  let headGroup = new THREE.Group()
+  headGroup.name = '头部'
+  headGroup.add(headMesh, leftEyeMesh, rightEyeMesh)
+  // 身体网格模型和组
+  let neckMesh = cylinderMesh(3, 10, 0, -15, 0)
+  neckMesh.name = '脖子'
+  let bodyMesh = cylinderMesh(14, 30, 0, -35, 0)
+  bodyMesh.name = '腹部'
+  let leftLegMesh = cylinderMesh(4, 60, 0, -80, -7)
+  leftLegMesh.name = '左腿'
+  let rightLegMesh = cylinderMesh(4, 60, 0, -80, 7)
+  rightLegMesh.name = '右腿'
+  let legGroup = new THREE.Group()
+  legGroup.name = '腿'
+  legGroup.add(leftLegMesh, rightLegMesh)
+  let bodyGroup = new THREE.Group()
+  bodyGroup.name = '身体'
+  bodyGroup.add(neckMesh, bodyMesh, legGroup)
+  // 人Group
+  let personGroup = new THREE.Group()
+  personGroup.name = '人'
+  personGroup.add(headGroup, bodyGroup)
+  personGroup.translateY(50)
+  scene.add(personGroup)
+
+  // 球体网格模型创建函数
+  function sphereMesh (R, x, y, z) {
+    let geometry = new THREE.SphereGeometry(R, 25, 25) //球体几何体
+    let material = new THREE.MeshPhongMaterial({
+      color: 0x0000ff
+    }) //材质对象Material
+    let mesh = new THREE.Mesh(geometry, material) // 创建网格模型对象
+    mesh.position.set(x, y, z)
+    return mesh
+  }
+
+  // 圆柱体网格模型创建函数
+  function cylinderMesh (R, h, x, y, z) {
+    let geometry = new THREE.CylinderGeometry(R, R, h, 25, 25) //球体几何体
+    let material = new THREE.MeshPhongMaterial({
+      color: 0x0000ff
+    }) //材质对象Material
+    let mesh = new THREE.Mesh(geometry, material) // 创建网格模型对象
+    mesh.position.set(x, y, z)
+    return mesh
+  }
+
+  // endregion
+
+  // region 遍历scene
+
+  scene.traverse(function (obj) {
+    if (obj.type === 'Group') {
+      console.log(obj.name)
+    }
+    if (obj.type === 'Mesh') {
+      console.log('  ' + obj.name)
+      obj.material.color.set(0xffff00)
+    }
+    if (obj.name === '左眼' | obj.name === '右眼') {
+      obj.material.color.set(0x000000)
+    }
+  })
+  // endregion
+
+  // region 光源设置，添加到场景
+  /**
+   * 光源设置
+   */
+    //点光源
+  let point = new THREE.PointLight(0xffffff)
+  point.position.set(400, 200, 300) //点光源位置
+  scene.add(point) //点光源添加到场景中
+  //环境光
+  let ambient = new THREE.AmbientLight(0x444444)
+  scene.add(ambient)
+  // console.log(scene)
+  // console.log(scene.children)
   // endregion
 
   // region 相机设置

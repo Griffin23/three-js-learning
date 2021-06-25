@@ -27,36 +27,28 @@
 
   // region 创建模型（from 几合体 + 材质 等），添加到场景
 
-  let points = [
-    new THREE.Vector2(-50, -50),
-    new THREE.Vector2(-60, 0),
-    new THREE.Vector2(0, 50),
-    new THREE.Vector2(60, 0),
-    new THREE.Vector2(50, -50),
-    new THREE.Vector2(-50, -50)
-  ]
-  // 通过顶点定义轮廓
-  let shape = new THREE.Shape(points)
-  // shape可以理解为一个需要填充轮廓
-  // 所谓填充：ShapeGeometry算法利用顶点计算出三角面face3数据填充轮廓
-  let geometry = new THREE.ShapeGeometry(shape, 25)
-
-  // region 通过shape的方法绘制轮廓
-  shape = new THREE.Shape()
-  // shape.absarc(0, 0, 100, 0, 2 * Math.PI)//圆弧轮廓
-  // 四条直线绘制一个矩形轮廓
-  shape.moveTo(0, 0)//起点
-  shape.lineTo(0, 100)//第2点
-  shape.lineTo(100, 100)//第3点
-  shape.lineTo(100, 0)//第4点
-  shape.lineTo(0, 0)//第5点
-  geometry = new THREE.ShapeGeometry(shape, 25)
-  // endregion
+  // 一个外轮廓圆弧嵌套三个内圆弧轮廓
+  let shape = new THREE.Shape() //Shape对象
+  //外轮廓
+  shape.arc(0, 0, 100, 0, 2 * Math.PI)
+  // 内轮廓1
+  let path1 = new THREE.Path()
+  path1.arc(0, 0, 40, 0, 2 * Math.PI)
+  // 内轮廓2
+  let path2 = new THREE.Path()
+  path2.arc(80, 0, 10, 0, 2 * Math.PI)
+  // 内轮廓3
+  let path3 = new THREE.Path()
+  path3.arc(-80, 0, 10, 0, 2 * Math.PI)
+  //三个内轮廓分别插入到holes属性中
+  shape.holes.push(path1, path2, path3)
+  let geometry = new THREE.ShapeGeometry(shape, 30)
 
   let material = new THREE.MeshLambertMaterial({
-    color: 0x0000ff
+    color: 0x0000ff,
+    side: THREE.DoubleSide
   }) //材质对象Material
-  material.wireframe = true // 材质-显示骨架
+  // material.wireframe = true // 材质-显示骨架
   let mesh = new THREE.Mesh(geometry, material) //网格模型对象Mesh
   scene.add(mesh) //网格模型添加到场景中
   // endregion

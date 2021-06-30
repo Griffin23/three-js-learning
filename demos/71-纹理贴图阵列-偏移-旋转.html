@@ -46,7 +46,16 @@
     render()
   })
   // 偏移
-  texture.offset = new THREE.Vector2(0.3, 0.1)
+  // texture.offset = new THREE.Vector2(0.3, 0.1)
+
+  // region 贴图阵列
+  // 设置阵列模式   默认ClampToEdgeWrapping  RepeatWrapping：阵列  镜像阵列：MirroredRepeatWrapping
+  texture.wrapS = THREE.RepeatWrapping
+  texture.wrapT = THREE.RepeatWrapping
+  // uv两个方向纹理重复数量
+  texture.repeat.set(4, 3)
+  // endregion
+
   // endregion
 
   // region 光源设置，添加到场景

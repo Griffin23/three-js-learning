@@ -43,6 +43,10 @@
     // 设置材质数组
     let materialArr = [material_2, material_1, material_1, material_1, material_1, material_1]
 
+    // 材质数组索引
+    // geometry.groups[4].materialIndex = 0;
+    // geometry.groups[5].materialIndex = 0;
+
 // 设置数组材质对象作为网格模型材质参数
     let mesh = new THREE.Mesh(geometry, materialArr) //网格模型对象Mesh1
     scene.add(mesh) //网格模型添加到场景中

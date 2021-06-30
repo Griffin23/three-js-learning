@@ -49,11 +49,18 @@
   // texture.offset = new THREE.Vector2(0.3, 0.1)
 
   // region 贴图阵列
-  // 设置阵列模式   默认ClampToEdgeWrapping  RepeatWrapping：阵列  镜像阵列：MirroredRepeatWrapping
-  texture.wrapS = THREE.RepeatWrapping
-  texture.wrapT = THREE.RepeatWrapping
-  // uv两个方向纹理重复数量
-  texture.repeat.set(4, 3)
+  // // 设置阵列模式   默认ClampToEdgeWrapping  RepeatWrapping：阵列  镜像阵列：MirroredRepeatWrapping
+  // texture.wrapS = THREE.RepeatWrapping
+  // texture.wrapT = THREE.RepeatWrapping
+  // // uv两个方向纹理重复数量
+  // texture.repeat.set(4, 3)
+  // endregion
+
+  // region 贴图旋转
+  // 设置纹理旋转角度
+  texture.rotation = Math.PI / 4
+  // 设置纹理的旋转中心，默认(0,0)
+  texture.center.set(0.5, 0.5)
   // endregion
 
   // endregion

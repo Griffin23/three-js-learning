@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>3js demo</title>
+  <!--引入three.js三维引擎-->
+  <script src="../sdk/three-r129.js"></script>
+  <script src="../sdk/OrbitControls.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+  // region 创建场景对象Scene
+  /**
+   * 创建场景对象Scene
+   */
+  let scene = new THREE.Scene()
+  // endregion
+
+  // region 创建模型（from 几合体 + 材质 等），添加到场景
+
+  // 创建video对象
+  let video = document.createElement('video')
+  video.src = '../assets/video/nature.mp4' // 设置视频地址
+  video.muted = true // chrome只允许静音的video autoplay
+  // video.autoplay = true // 针对chrome无法autoplay的情况，使用timeout调play接口
+  setTimeout(() => {
+    video.play()
+  }, 0)
+
+  // video对象作为VideoTexture参数创建纹理对象
+  let texture = new THREE.VideoTexture(video)
+  let geometry = new THREE.PlaneGeometry(108, 71) //矩形平面
+  let material = new THREE.MeshPhongMaterial({
+    map: texture // 设置纹理贴图
+  }) //材质对象Material
+  let mesh = new THREE.Mesh(geometry, material) //网格模型对象Mesh
+  scene.add(mesh) //网格模型添加到场景中
+
+  // endregion
+
+  // region 光源设置，添加到场景
+  /**
+   * 光源设置
+   */
+    //点光源
+  let point = new THREE.PointLight(0xffffff)
+  point.position.set(400, 200, 300) //点光源位置
+  scene.add(point) //点光源添加到场景中
+  //环境光
+  let ambient = new THREE.AmbientLight(0x444444)
+  scene.add(ambient)
+  // console.log(scene)
+  // console.log(scene.children)
+  // endregion
+
+  // region 相机设置
+  /**
+   * 相机设置
+   */
+  let width = window.innerWidth //窗口宽度
+  let height = window.innerHeight //窗口高度
+  let k = width / height //窗口宽高比
+  let s = 200 //三维场景显示范围控制系数，系数越大，显示的范围越大
+  //创建相机对象
+  let camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000)
+  camera.position.set(200, 300, 200) //设置相机位置
+  camera.lookAt(scene.position) //设置相机方向(指向的场景对象)
+  // endregion
+
+  // region 创建渲染器对象，并渲染（渲染 scene + camera）
+  /**
+   * 创建渲染器对象
+   */
+  let renderer = new THREE.WebGLRenderer()
+  renderer.setSize(width, height)//设置渲染区域尺寸
+  renderer.setClearColor(0xb9d3ff, 1) //设置背景颜色
+  document.body.appendChild(renderer.domElement) //body元素中插入canvas对象
+  //执行渲染操作   指定场景、相机作为参数
+  function render () {
+    renderer.render(scene, camera)
+    requestAnimationFrame(render)
+  }
+
+  render()
+
+  // 监听鼠标和键盘
+  let controls = new THREE.OrbitControls(camera, renderer.domElement)//创建控件对象
+  controls.addEventListener('change', render)//监听鼠标、键盘事件
+  // endregion
+</script>
+</body>
+</html>

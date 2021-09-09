@@ -31,8 +31,14 @@
    */
     // let geometry = new THREE.SphereGeometry(60, 40, 40); //创建一个球体几何对象
   let geometry = new THREE.BoxGeometry(100, 100, 100) //创建一个立方体几何对象Geometry
-  let material = new THREE.MeshLambertMaterial({
-    color: 0x0000ff
+
+  let textureLoader = new THREE.TextureLoader()
+  let textureNormal = textureLoader.load('../assets/img/normal.jpg')
+  let material = new THREE.MeshPhongMaterial({
+    color: 0xff0000,
+    normalMap: textureNormal,
+    // 设置深浅程度，默认值(1,1)
+    normalScale: new THREE.Vector2(3, 3)
   }) //材质对象Material
   let mesh = new THREE.Mesh(geometry, material) //网格模型对象Mesh
   scene.add(mesh) //网格模型添加到场景中

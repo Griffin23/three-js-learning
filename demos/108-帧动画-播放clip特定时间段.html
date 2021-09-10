@@ -109,7 +109,13 @@
   var AnimationAction = mixer.clipAction(clip)
   // 通过操作Action设置播放方式
   AnimationAction.timeScale = 20 // 默认1 可以调节播放速度
-  // AnimationAction.loop = THREE.LoopOnce // 不循环播放
+  AnimationAction.loop = THREE.LoopOnce // 不循环播放
+  AnimationAction.clampWhenFinished = true // 暂停在最后一帧播放的状态
+
+  // 设置播放区间10~18  关键帧数据总时间是20
+  AnimationAction.time = 10 // 操作对象设置开始播放时间
+  clip.duration = 18 // 剪辑对象设置播放结束时间
+
   AnimationAction.play() // 开始播放
   // endregion
 

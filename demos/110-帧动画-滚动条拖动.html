@@ -14,9 +14,20 @@
   <!--引入three.js三维引擎-->
   <script src="../sdk/three-r129.js"></script>
   <script src="../sdk/OrbitControls.js"></script>
+  <!-- vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 
 <body>
+<div id="app">
+  <div class="block" style="display:inline;width:500px">
+    <el-slider v-model="time" show-input :max=20 :step=0.01></el-slider>
+  </div>
+</div>
 <script>
   // region 创建场景对象Scene
   /**
@@ -108,9 +119,10 @@
   // 剪辑clip作为参数，通过混合器clipAction方法返回一个操作对象AnimationAction
   var AnimationAction = mixer.clipAction(clip)
   // 通过操作Action设置播放方式
-  AnimationAction.timeScale = 20 // 默认1 可以调节播放速度
-  // AnimationAction.loop = THREE.LoopOnce // 不循环播放
-  AnimationAction.play() // 开始播放
+  // AnimationAction.timeScale = 20 // 默认1 可以调节播放速度
+  AnimationAction.loop = THREE.LoopOnce // 不循环播放
+  AnimationAction.clampWhenFinished = true
+  // AnimationAction.play() // 开始播放
   // endregion
 
   // region 创建渲染器对象，并渲染（渲染 scene + camera）
@@ -138,6 +150,22 @@
   let controls = new THREE.OrbitControls(camera, renderer.domElement)//创建控件对象
   controls.addEventListener('change', render)//监听鼠标、键盘事件
   // endregion
+
+  //实例化vue
+  vm = new Vue({
+    el: "#app",
+    data: {
+      time: 0,
+    },
+    watch: {
+      time:function (value) {
+        // 开始结束时间设置为一样，相当于播放时间为0，直接跳转到时间点对应的状态
+        AnimationAction.time = value; //操作对象设置开始播放时间
+        clip.duration = AnimationAction.time;//剪辑对象设置播放结束时间
+        AnimationAction.play(); //开始播放
+      }
+    },
+  })
 </script>
 </body>
 </html>

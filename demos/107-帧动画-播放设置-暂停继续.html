@@ -17,6 +17,7 @@
 </head>
 
 <body>
+<button onclick="togglePlay()" type="button" style="position: absolute;padding: 10px;">暂停/继续</button>
 <script>
   // region 创建场景对象Scene
   /**
@@ -111,6 +112,12 @@
   AnimationAction.timeScale = 20 // 默认1 可以调节播放速度
   // AnimationAction.loop = THREE.LoopOnce // 不循环播放
   AnimationAction.play() // 开始播放
+  // endregion
+
+  // region 播放设置
+  function togglePlay () {
+    AnimationAction.paused = !AnimationAction.paused
+  }
   // endregion
 
   // region 创建渲染器对象，并渲染（渲染 scene + camera）

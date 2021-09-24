@@ -17,6 +17,8 @@
 </head>
 
 <body>
+<!-- 控制div位置 绝对定位  距离上方100px  距离左侧30px -->
+<div id="pos" style="position: absolute;left: 30px;top: 100px;"></div>
 <script>
   // region 创建场景对象Scene
   /**
@@ -57,8 +59,8 @@
   /**
    * 相机设置
    */
-  let width = window.innerWidth //窗口宽度
-  let height = window.innerHeight //窗口高度
+  let width = 300 //窗口宽度
+  let height = 300 //窗口高度
   let k = width / height //窗口宽高比
   let s = 200 //三维场景显示范围控制系数，系数越大，显示的范围越大
   //创建相机对象
@@ -74,7 +76,8 @@
   let renderer = new THREE.WebGLRenderer()
   renderer.setSize(width, height)//设置渲染区域尺寸
   renderer.setClearColor(0xb9d3ff, 1) //设置背景颜色
-  document.body.appendChild(renderer.domElement) //body元素中插入canvas对象
+  // .domElement属性是Three.js执行渲染方法.render()的渲染结果，本质上就是一个HTML元素Canvas
+  document.getElementById('pos').appendChild(renderer.domElement);
   //执行渲染操作   指定场景、相机作为参数
   function render() {
     renderer.render(scene, camera)

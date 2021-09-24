@@ -14,6 +14,10 @@
   <!--引入three.js三维引擎-->
   <script src="../sdk/three-r129.js"></script>
   <script src="../sdk/OrbitControls.js"></script>
+  <!-- FBXLoader -->
+  <script src="../sdk/FBXLoader-r92.js"></script>
+  <!-- FBXLoader辅助工具 -->
+  <script src="../sdk/inflate-r92.min.js"></script>
 </head>
 
 <body>
@@ -26,16 +30,22 @@
   // endregion
 
   // region 创建模型（from 几合体 + 材质 等），添加到场景
-  /**
-   * 创建网格模型
-   */
-    // let geometry = new THREE.SphereGeometry(60, 40, 40); //创建一个球体几何对象
-  let geometry = new THREE.BoxGeometry(100, 100, 100) //创建一个立方体几何对象Geometry
-  let material = new THREE.MeshLambertMaterial({
-    color: 0x0000ff
-  }) //材质对象Material
-  let mesh = new THREE.Mesh(geometry, material) //网格模型对象Mesh
-  scene.add(mesh) //网格模型添加到场景中
+
+  let mixer = null
+  let fbxLoader = new THREE.FBXLoader()
+  fbxLoader.load('../assets/model/dance/SambaDancing.fbx', function (obj) {
+    scene.add(obj)
+    // obj作为参数创建一个混合器，解析播放obj及其子对象包含的动画数据
+    mixer = new THREE.AnimationMixer(obj);
+    // 查看动画数据
+    console.log(obj.animations)
+    // obj.animations[0]：获得剪辑对象clip
+    var AnimationAction=mixer.clipAction(obj.animations[0]);
+    // AnimationAction.timeScale = 1; //默认1，可以调节播放速度
+    // AnimationAction.loop = THREE.LoopOnce; //不循环播放
+    // AnimationAction.clampWhenFinished=true;//暂停在最后一帧播放的状态
+    AnimationAction.play();//播放动画
+  })
   // endregion
 
   // region 光源设置，添加到场景
@@ -76,10 +86,20 @@
   renderer.setClearColor(0xb9d3ff, 1) //设置背景颜色
   document.body.appendChild(renderer.domElement) //body元素中插入canvas对象
   //执行渲染操作   指定场景、相机作为参数
+  // 创建一个时钟对象Clock
+  var clock = new THREE.Clock();
+  // 渲染函数
   function render() {
-    renderer.render(scene, camera)
+    renderer.render(scene, camera); //执行渲染操作
+    requestAnimationFrame(render); //请求再次执行渲染函数render，渲染下一帧
+
+    if (mixer !== null) {
+      //clock.getDelta()方法获得两帧的时间间隔
+      // 更新混合器相关的时间
+      mixer.update(clock.getDelta());
+    }
   }
-  render()
+  render();
 
   // 监听鼠标和键盘
   let controls = new THREE.OrbitControls(camera, renderer.domElement)//创建控件对象
